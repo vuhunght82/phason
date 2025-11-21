@@ -1,0 +1,5 @@
+{
+  "name": "Paint Mixer AI",
+  "description": "An AI-powered paint mixing calculator. Choose a target color and specify the desired amount, and the app will generate a precise formula using a set of base colors.",
+  "requestFramePermissions": []
+}
