@@ -2,9 +2,11 @@ import React, { createContext, useState, useContext, ReactNode, useEffect, useCa
 
 type Language = 'en' | 'vi';
 
-interface Translations {
-  [key: string]: string;
-}
+type Translations = { [key: string]: string };
+type AllTranslations = {
+  en: Translations;
+  vi: Translations;
+};
 
 interface LanguageContextType {
   language: Language;
@@ -19,45 +21,50 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     const storedLang = typeof window !== 'undefined' ? localStorage.getItem('language') : 'en';
     return (storedLang === 'en' || storedLang === 'vi') ? storedLang : 'en';
   });
+  
+  const [translations, setTranslations] = useState<AllTranslations | null>(null);
 
-  const [translations, setTranslations] = useState<Record<Language, Translations>>({ en: {}, vi: {} });
+  useEffect(() => {
+    const fetchTranslations = async () => {
+      try {
+        const [enResponse, viResponse] = await Promise.all([
+          fetch('./locales/en.json'),
+          fetch('./locales/vi.json')
+        ]);
+        if (!enResponse.ok || !viResponse.ok) {
+          throw new Error('Failed to load translation files');
+        }
+        const enData = await enResponse.json();
+        const viData = await viResponse.json();
+        setTranslations({ en: enData, vi: viData });
+      } catch (error) {
+        console.error("Could not load translations:", error);
+        // Set empty translations to prevent crashing and show keys as fallback
+        setTranslations({ en: {}, vi: {} });
+      }
+    };
+
+    fetchTranslations();
+  }, []); // Run only once on mount
 
   useEffect(() => {
     localStorage.setItem('language', language);
   }, [language]);
-
-  useEffect(() => {
-    const loadTranslations = async () => {
-        try {
-            const [enRes, viRes] = await Promise.all([
-                fetch('./locales/en.json'),
-                fetch('./locales/vi.json')
-            ]);
-            if (!enRes.ok || !viRes.ok) {
-                throw new Error('Failed to fetch translation files');
-            }
-            const enData = await enRes.json();
-            const viData = await viRes.json();
-            setTranslations({ en: enData, vi: viData });
-        } catch (error) {
-            console.error('Failed to load translations:', error);
-        }
-    };
-    loadTranslations();
-  }, []); // Run only once on mount
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
   };
 
   const t = useCallback((key: string, replacements: Record<string, string | number> = {}) => {
-    const langTranslations = translations[language];
-    // If translations for the current language haven't loaded yet, default to the key.
-    // FIX: The !langTranslations check is redundant because `translations[language]` will always be an object.
-    if (Object.keys(langTranslations).length === 0) {
-        return key;
+    if (!translations) {
+      return key; // Return key as fallback while loading
     }
     
+    const langTranslations = translations[language];
+    if (!langTranslations) {
+        return key;
+    }
+
     let translation = langTranslations[key] || key;
     
     Object.keys(replacements).forEach(placeholder => {
@@ -68,6 +75,8 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     return translation;
   }, [language, translations]);
 
+  // Render children immediately and let them use the fallback 't' function
+  // which returns keys until translations are loaded. This avoids a blank screen.
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}

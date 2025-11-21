@@ -21,7 +21,8 @@
   "generatingButton": "Generating Formula...",
   "errorSelectColor": "Please select a color first.",
   "errorInvalidQuantity": "Please enter a valid quantity.",
-  "errorApiFailure": "Failed to generate formula. The AI might be busy. Please try again.",
+  "errorApiFailure": "Failed to generate formula. The AI might be busy or the API Key may be invalid. Please try again.",
+  "errorApiKeyMissing": "Please provide your Google Gemini API Key before generating a formula.",
   "resultLoading": "AI is mixing the colors...",
   "resultErrorTitle": "An Error Occurred",
   "resultPlaceholderTitle": "Your formula will appear here.",
@@ -31,5 +32,11 @@
   "pickerHovering": "Hovering:",
   "pickerInstructions": "Move cursor over image and click to select a color.",
   "pickerCancel": "Cancel",
-  "customColorTitle": "Custom ({hex})"
+  "customColorTitle": "Custom ({hex})",
+  "apiKeyTitle": "Enter Your Gemini API Key",
+  "apiKeyDescription": "To use this application, please provide your own Google Gemini API key. Your key is stored securely in your browser's local storage and is never sent to our servers.",
+  "apiKeyLabel": "Google Gemini API Key",
+  "apiKeyPlaceholder": "Enter your API key here",
+  "apiKeyInstructions": "You can get your API key from <a href='https://aistudio.google.com/app/apikey' target='_blank' rel='noopener noreferrer' class='text-brand-primary hover:underline'>Google AI Studio</a>.",
+  "apiKeySaveButton": "Save and Continue"
 }

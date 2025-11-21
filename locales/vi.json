@@ -21,7 +21,8 @@
   "generatingButton": "Đang tạo công thức...",
   "errorSelectColor": "Vui lòng chọn một màu trước.",
   "errorInvalidQuantity": "Vui lòng nhập số lượng hợp lệ.",
-  "errorApiFailure": "Không thể tạo công thức. AI có thể đang bận. Vui lòng thử lại.",
+  "errorApiFailure": "Không thể tạo công thức. AI có thể đang bận hoặc API Key không hợp lệ. Vui lòng thử lại.",
+  "errorApiKeyMissing": "Vui lòng cung cấp khóa API Google Gemini của bạn trước khi tạo công thức.",
   "resultLoading": "AI đang pha màu...",
   "resultErrorTitle": "Đã Xảy Ra Lỗi",
   "resultPlaceholderTitle": "Công thức của bạn sẽ hiện ở đây.",
@@ -29,7 +30,13 @@
   "resultFormulaFor": "Công thức cho",
   "pickerTitle": "Chọn một màu",
   "pickerHovering": "Màu đang trỏ:",
-  "pickerInstructions": "Di chuyển con trtrên ảnh và nhấp để chọn màu.",
+  "pickerInstructions": "Di chuyển con trỏ trên ảnh và nhấp để chọn màu.",
   "pickerCancel": "Hủy",
-  "customColorTitle": "Tùy chỉnh ({hex})"
+  "customColorTitle": "Tùy chỉnh ({hex})",
+  "apiKeyTitle": "Nhập Khóa API Gemini của bạn",
+  "apiKeyDescription": "Để sử dụng ứng dụng này, vui lòng cung cấp khóa API Google Gemini của riêng bạn. Khóa của bạn được lưu trữ an toàn trong bộ nhớ cục bộ của trình duyệt và không bao giờ được gửi đến máy chủ của chúng tôi.",
+  "apiKeyLabel": "Khóa API Google Gemini",
+  "apiKeyPlaceholder": "Nhập khóa API của bạn tại đây",
+  "apiKeyInstructions": "Bạn có thể lấy khóa API của mình từ <a href='https://aistudio.google.com/app/apikey' target='_blank' rel='noopener noreferrer' class='text-brand-primary hover:underline'>Google AI Studio</a>.",
+  "apiKeySaveButton": "Lưu và Tiếp tục"
 }

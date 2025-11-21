@@ -10,9 +10,11 @@ import CustomColorPicker from './components/CustomColorPicker';
 import ImageColorPicker from './components/ImageColorPicker';
 import { useTranslation } from './context/LanguageContext';
 import LanguageSwitcher from './components/LanguageSwitcher';
+import ApiKeyModal from './components/ApiKeyModal';
 
 const App: React.FC = () => {
   const { t } = useTranslation();
+  const [apiKey, setApiKey] = useState<string | null>(() => localStorage.getItem('gemini-api-key'));
   const [selectedColor, setSelectedColor] = useState<Color | null>(TARGET_COLORS[5]);
   const [quantity, setQuantity] = useState<number>(1000);
   const [unit, setUnit] = useState<Unit>('g');
@@ -26,6 +28,11 @@ const App: React.FC = () => {
   const [compensateForGlass, setCompensateForGlass] = useState<boolean>(true);
   const [glassThickness, setGlassThickness] = useState<GlassThickness>(5);
 
+  const handleApiKeySave = (key: string) => {
+    localStorage.setItem('gemini-api-key', key);
+    setApiKey(key);
+  };
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -38,7 +45,6 @@ const App: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
-    // Reset file input value to allow re-uploading the same file
     event.target.value = '';
   };
 
@@ -50,6 +56,10 @@ const App: React.FC = () => {
   };
 
   const handleCalculate = useCallback(async () => {
+    if (!apiKey) {
+      setError(t('errorApiKeyMissing'));
+      return;
+    }
     if (!selectedColor) {
       setError(t('errorSelectColor'));
       return;
@@ -64,7 +74,7 @@ const App: React.FC = () => {
     setFormula(null);
 
     try {
-      const generatedFormula = await getPaintFormula(selectedColor.name, selectedColor.hex, compensateForGlass, glassThickness);
+      const generatedFormula = await getPaintFormula(selectedColor.name, selectedColor.hex, compensateForGlass, glassThickness, apiKey);
       setFormula(generatedFormula);
     } catch (err) {
       console.error(err);
@@ -72,11 +82,12 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedColor, quantity, compensateForGlass, glassThickness, t]);
+  }, [selectedColor, quantity, compensateForGlass, glassThickness, apiKey, t]);
 
   return (
     <>
-      <div className="min-h-screen bg-base-100 text-content-100 font-sans flex flex-col items-center p-4 sm:p-6 lg:p-8">
+      {!apiKey && <ApiKeyModal onSave={handleApiKeySave} />}
+      <div className={`min-h-screen bg-base-100 text-content-100 font-sans flex flex-col items-center p-4 sm:p-6 lg:p-8 transition-filter duration-300 ${!apiKey ? 'blur-sm pointer-events-none' : ''}`}>
         <div className="w-full max-w-6xl mx-auto">
           <header className="text-center mb-8">
             <div className="flex items-center justify-center gap-4 mb-2">

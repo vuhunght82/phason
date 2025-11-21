@@ -1,15 +1,6 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { Formula, GlassThickness } from '../types';
 import { BASE_COLORS } from '../constants';
-
-const API_KEY = process.env.API_KEY;
-
-if (!API_KEY) {
-  throw new Error("API_KEY environment variable not set");
-}
-
-const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 const baseColorNames = BASE_COLORS.map(c => c.name);
 
@@ -26,8 +17,15 @@ export async function getPaintFormula(
     colorName: string, 
     colorHex: string | undefined, 
     compensateForGlass: boolean,
-    glassThickness: GlassThickness
+    glassThickness: GlassThickness,
+    apiKey: string
 ): Promise<Formula> {
+  
+  if (!apiKey) {
+    throw new Error("API key is required.");
+  }
+  const ai = new GoogleGenAI({ apiKey });
+
   try {
     let prompt = `You are an expert paint mixing chemist. Your task is to provide a precise mixing formula to create the color "${colorName}"${colorHex ? ` with the hex code ${colorHex}` : ''}.
       You must use only the following available base colors: ${baseColorNames.join(', ')}.
@@ -64,7 +62,6 @@ The generated formula MUST compensate for this green tint based on the specified
       },
     });
 
-    // FIX: Use optional chaining as response.text can be undefined.
     const textResponse = response.text?.trim();
     if (!textResponse) {
         throw new Error("Received an empty response from the API.");
