@@ -149,8 +149,9 @@ const App: React.FC = () => {
               </div>
             </div>
           </main>
-          <footer className="text-center mt-12 text-content-200 text-sm flex flex-col items-center gap-4">
+          <footer className="text-center mt-12 text-content-200 text-sm flex flex-col items-center gap-2">
               <p>{`© ${new Date().getFullYear()} AI Pha Sơn. Hỗ trợ bởi Google Gemini.`}</p>
+              <p>Ý tưởng thiết kế bởi Vũ Đình Hưng</p>
           </footer>
         </div>
       </div>
