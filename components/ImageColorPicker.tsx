@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { EyeDropperIcon } from './icons/EyeDropperIcon';
-import { useTranslation } from '../context/LanguageContext';
 
 interface ImageColorPickerProps {
   imageUrl: string;
@@ -17,7 +16,6 @@ function rgbToHex(r: number, g: number, b: number): string {
 const ImageColorPicker: React.FC<ImageColorPickerProps> = ({ imageUrl, onColorSelect, onClose }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [hoverColor, setHoverColor] = useState<string>('#FFFFFF');
-    const { t } = useTranslation();
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -82,10 +80,10 @@ const ImageColorPicker: React.FC<ImageColorPickerProps> = ({ imageUrl, onColorSe
                 <div className="flex justify-between items-center border-b border-base-300 pb-3">
                     <div className="flex items-center gap-3">
                         <EyeDropperIcon className="w-6 h-6 text-brand-primary" />
-                        <h2 className="text-xl font-bold">{t('pickerTitle')}</h2>
+                        <h2 className="text-xl font-bold">Chọn một màu</h2>
                     </div>
                      <div className="flex items-center gap-4">
-                        <span className="text-sm text-content-200">{t('pickerHovering')}</span>
+                        <span className="text-sm text-content-200">Màu đang trỏ:</span>
                         <div className="w-8 h-8 rounded-full border-2 border-content-100" style={{ backgroundColor: hoverColor }}></div>
                         <span className="font-mono text-content-100">{hoverColor}</span>
                     </div>
@@ -101,8 +99,8 @@ const ImageColorPicker: React.FC<ImageColorPickerProps> = ({ imageUrl, onColorSe
                 </div>
                 
                  <div className="flex justify-end items-center gap-4 pt-4 border-t border-base-300">
-                    <p className="text-sm text-content-200 mr-auto">{t('pickerInstructions')}</p>
-                    <button onClick={onClose} className="py-2 px-5 rounded-lg bg-base-300 hover:bg-base-100/50 transition-colors">{t('pickerCancel')}</button>
+                    <p className="text-sm text-content-200 mr-auto">Di chuyển con trỏ trên ảnh và nhấp để chọn màu.</p>
+                    <button onClick={onClose} className="py-2 px-5 rounded-lg bg-base-300 hover:bg-base-100/50 transition-colors">Hủy</button>
                 </div>
             </div>
         </div>

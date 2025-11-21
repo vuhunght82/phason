@@ -8,12 +8,9 @@ import ResultDisplay from './components/ResultDisplay';
 import { PaintBrushIcon } from './components/icons/PaintBrushIcon';
 import CustomColorPicker from './components/CustomColorPicker';
 import ImageColorPicker from './components/ImageColorPicker';
-import { useTranslation } from './context/LanguageContext';
-import LanguageSwitcher from './components/LanguageSwitcher';
 import ApiKeyModal from './components/ApiKeyModal';
 
 const App: React.FC = () => {
-  const { t } = useTranslation();
   const [apiKey, setApiKey] = useState<string | null>(() => localStorage.getItem('gemini-api-key'));
   const [selectedColor, setSelectedColor] = useState<Color | null>(TARGET_COLORS[5]);
   const [quantity, setQuantity] = useState<number>(1000);
@@ -49,7 +46,7 @@ const App: React.FC = () => {
   };
 
   const handleColorSelectFromImage = (hex: string) => {
-    const newCustomColor = { name: t('customColorTitle', { hex }), hex };
+    const newCustomColor = { name: `Tùy chỉnh (${hex})`, hex };
     setCustomColor(newCustomColor);
     setSelectedColor(newCustomColor);
     setIsPickerOpen(false);
@@ -57,15 +54,15 @@ const App: React.FC = () => {
 
   const handleCalculate = useCallback(async () => {
     if (!apiKey) {
-      setError(t('errorApiKeyMissing'));
+      setError("Vui lòng cung cấp khóa API Google Gemini của bạn trước khi tạo công thức.");
       return;
     }
     if (!selectedColor) {
-      setError(t('errorSelectColor'));
+      setError("Vui lòng chọn một màu trước.");
       return;
     }
     if (quantity <= 0) {
-      setError(t('errorInvalidQuantity'));
+      setError("Vui lòng nhập số lượng hợp lệ.");
       return;
     }
 
@@ -78,11 +75,11 @@ const App: React.FC = () => {
       setFormula(generatedFormula);
     } catch (err) {
       console.error(err);
-      setError(t('errorApiFailure'));
+      setError("Không thể tạo công thức. AI có thể đang bận hoặc API Key không hợp lệ. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }
-  }, [selectedColor, quantity, compensateForGlass, glassThickness, apiKey, t]);
+  }, [selectedColor, quantity, compensateForGlass, glassThickness, apiKey]);
 
   return (
     <>
@@ -93,25 +90,25 @@ const App: React.FC = () => {
             <div className="flex items-center justify-center gap-4 mb-2">
               <PaintBrushIcon className="w-10 h-10 text-brand-primary" />
               <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">
-                {t('appTitle')}
+                AI Pha Sơn
               </h1>
             </div>
             <p className="text-lg text-content-200">
-              {t('appDescription')}
+              Chọn màu, nhập số lượng, và để AI tạo công thức pha màu.
             </p>
           </header>
 
           <main className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="bg-base-200/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50">
-              <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">{t('step1Title')}</h2>
-              <h3 className="text-lg font-medium text-content-200 mb-3">{t('paletteHeader')}</h3>
+              <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">1. Chọn Màu Mục Tiêu</h2>
+              <h3 className="text-lg font-medium text-content-200 mb-3">Từ Bảng Màu</h3>
               <ColorPalette 
                 colors={TARGET_COLORS}
                 selectedColor={selectedColor} 
                 onSelectColor={setSelectedColor}
               />
                <div className="mt-6 border-t border-base-300 pt-4">
-                <h3 className="text-lg font-medium text-content-200 mb-3">{t('uploadHeader')}</h3>
+                <h3 className="text-lg font-medium text-content-200 mb-3">Hoặc Tải Ảnh Lên</h3>
                 <CustomColorPicker
                   onImageUpload={handleImageUpload}
                   customColor={customColor}
@@ -123,7 +120,7 @@ const App: React.FC = () => {
 
             <div className="flex flex-col gap-8">
               <div className="bg-base-200/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50">
-                <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">{t('step2Title')}</h2>
+                <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">2. Thiết Lập Số Lượng</h2>
                 <CalculatorForm 
                   quantity={quantity}
                   setQuantity={setQuantity}
@@ -140,7 +137,7 @@ const App: React.FC = () => {
               </div>
 
               <div className="bg-base-200/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex-grow border border-white/50">
-                <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">{t('step3Title')}</h2>
+                <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">3. Xem Công Thức</h2>
                 <ResultDisplay
                   formula={formula}
                   totalQuantity={quantity}
@@ -153,8 +150,7 @@ const App: React.FC = () => {
             </div>
           </main>
           <footer className="text-center mt-12 text-content-200 text-sm flex flex-col items-center gap-4">
-              <LanguageSwitcher />
-              <p>{t('footerText', { year: new Date().getFullYear() })}</p>
+              <p>{`© ${new Date().getFullYear()} AI Pha Sơn. Hỗ trợ bởi Google Gemini.`}</p>
           </footer>
         </div>
       </div>

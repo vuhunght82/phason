@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Color } from '../types';
 import { UploadIcon } from './icons/UploadIcon';
-import { useTranslation } from '../context/LanguageContext';
 
 interface CustomColorPickerProps {
     onImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -11,7 +10,6 @@ interface CustomColorPickerProps {
 }
 
 const CustomColorPicker: React.FC<CustomColorPickerProps> = ({ onImageUpload, customColor, onSelectColor, isSelected }) => {
-    const { t } = useTranslation();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleUploadClick = () => {
@@ -32,7 +30,7 @@ const CustomColorPicker: React.FC<CustomColorPickerProps> = ({ onImageUpload, cu
                 className="flex flex-col items-center justify-center w-28 h-20 bg-base-300 rounded-lg border-2 border-dashed border-base-100 hover:border-brand-primary transition-colors text-content-200 hover:text-brand-primary"
             >
                 <UploadIcon className="w-6 h-6 mb-1" />
-                <span className="text-xs text-center font-medium">{t('uploadButton')}</span>
+                <span className="text-xs text-center font-medium">Tải Ảnh Lên</span>
             </button>
             {customColor && (
                  <div 
@@ -47,7 +45,7 @@ const CustomColorPicker: React.FC<CustomColorPickerProps> = ({ onImageUpload, cu
                         style={{ backgroundColor: customColor.hex }}
                     />
                     <span className={`text-xs text-center transition-colors ${isSelected ? 'text-brand-primary font-semibold' : 'text-content-200'}`}>
-                        {t('customColorName')}
+                        Tùy chỉnh
                     </span>
                 </div>
             )}

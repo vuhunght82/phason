@@ -1,7 +1,6 @@
 import React from 'react';
 import { Unit, Color, GlassThickness } from '../types';
 import { LoadingIcon } from './icons/LoadingIcon';
-import { useTranslation } from '../context/LanguageContext';
 
 interface CalculatorFormProps {
   quantity: number;
@@ -32,7 +31,6 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
   glassThickness,
   setGlassThickness
 }) => {
-  const { t } = useTranslation();
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     // Allow empty input to clear, otherwise parse as float
@@ -50,14 +48,14 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
     <div className="space-y-6">
       <div className="relative">
         <label htmlFor="quantity" className="block text-sm font-medium text-content-200 mb-1">
-          {t('totalAmountLabel')}
+          Tổng Số Lượng
         </label>
         <input
           type="number"
           id="quantity"
           value={quantity === 0 ? '' : quantity}
           onChange={handleQuantityChange}
-          placeholder={t('quantityPlaceholder')}
+          placeholder="ví dụ: 1000"
           className="w-full bg-base-300 text-content-100 placeholder-content-200/50 rounded-lg py-3 px-4 focus:ring-2 focus:ring-brand-primary focus:outline-none transition"
         />
         <div className="absolute inset-y-0 right-0 top-6 flex items-center pr-3">
@@ -67,7 +65,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
 
       <div>
         <label className="block text-sm font-medium text-content-200 mb-2">
-          {t('unitLabel')}
+          Đơn Vị
         </label>
         <div className="flex space-x-2 bg-base-300 p-1 rounded-lg">
           <button
@@ -76,7 +74,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
               unit === 'g' ? 'bg-brand-primary text-white' : 'text-content-200 hover:bg-base-100/50'
             }`}
           >
-            {t('unitWeight')}
+            Khối lượng (g)
           </button>
           <button
             onClick={() => setUnit('ml')}
@@ -84,7 +82,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
               unit === 'ml' ? 'bg-brand-primary text-white' : 'text-content-200 hover:bg-base-100/50'
             }`}
           >
-            {t('unitVolume')}
+            Thể tích (ml)
           </button>
         </div>
       </div>
@@ -92,9 +90,9 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
       <div className="flex items-center justify-between p-3 bg-base-300 rounded-lg">
         <div>
             <label htmlFor="glass-compensation" className="font-medium text-content-100">
-                {t('glassCompensationLabel')}
+                Bù Trừ Màu Kính
             </label>
-            <p className="text-xs text-content-200/80">{t('glassCompensationDescription')}</p>
+            <p className="text-xs text-content-200/80">Điều chỉnh công thức cho màu xanh tự nhiên của kính.</p>
         </div>
         <button
             type="button"
@@ -117,7 +115,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
       {compensateForGlass && (
         <div>
             <label className="block text-sm font-medium text-content-200 mb-2">
-                {t('glassThicknessLabel')}
+                Độ Dày Kính
             </label>
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 bg-base-300 p-1 rounded-lg">
                 {thicknesses.map((thickness) => (
@@ -143,10 +141,10 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
         {isLoading ? (
           <>
             <LoadingIcon className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
-            {t('generatingButton')}
+            Đang tạo công thức...
           </>
         ) : (
-          t('generateButton')
+          "Tạo Công Thức"
         )}
       </button>
     </div>
