@@ -23,9 +23,11 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   });
   
   const [translations, setTranslations] = useState<AllTranslations | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Add loading state
 
   useEffect(() => {
     const fetchTranslations = async () => {
+      setIsLoading(true);
       try {
         const [enResponse, viResponse] = await Promise.all([
           fetch('./locales/en.json'),
@@ -41,6 +43,8 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
         console.error("Could not load translations:", error);
         // Set empty translations to prevent crashing and show keys as fallback
         setTranslations({ en: {}, vi: {} });
+      } finally {
+        setIsLoading(false); // Set loading to false after fetch completes or fails
       }
     };
 
@@ -57,7 +61,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const t = useCallback((key: string, replacements: Record<string, string | number> = {}) => {
     if (!translations) {
-      return key; // Return key as fallback while loading
+      return key; // Return key as fallback while loading or if failed
     }
     
     const langTranslations = translations[language];
@@ -75,8 +79,16 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     return translation;
   }, [language, translations]);
 
-  // Render children immediately and let them use the fallback 't' function
-  // which returns keys until translations are loaded. This avoids a blank screen.
+  // While translations are loading, show a full-screen loading indicator.
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-base-100 flex items-center justify-center">
+        <div className="w-20 h-20 border-4 border-dashed rounded-full animate-spin border-brand-primary"></div>
+      </div>
+    );
+  }
+
+  // Once loaded, provide the context and render the children.
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
