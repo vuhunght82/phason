@@ -87,7 +87,7 @@ const App: React.FC = () => {
   return (
     <>
       {!apiKey && <ApiKeyModal onSave={handleApiKeySave} />}
-      <div className={`min-h-screen bg-base-100 text-content-100 font-sans flex flex-col items-center p-4 sm:p-6 lg:p-8 transition-filter duration-300 ${!apiKey ? 'blur-sm pointer-events-none' : ''}`}>
+      <div className={`min-h-screen text-content-100 font-sans flex flex-col items-center p-4 sm:p-6 lg:p-8 transition-filter duration-300 ${!apiKey ? 'blur-sm pointer-events-none' : ''}`}>
         <div className="w-full max-w-6xl mx-auto">
           <header className="text-center mb-8">
             <div className="flex items-center justify-center gap-4 mb-2">
@@ -102,7 +102,7 @@ const App: React.FC = () => {
           </header>
 
           <main className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-base-200 p-6 rounded-2xl shadow-lg">
+            <div className="bg-base-200/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50">
               <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">{t('step1Title')}</h2>
               <h3 className="text-lg font-medium text-content-200 mb-3">{t('paletteHeader')}</h3>
               <ColorPalette 
@@ -122,7 +122,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-8">
-              <div className="bg-base-200 p-6 rounded-2xl shadow-lg">
+              <div className="bg-base-200/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50">
                 <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">{t('step2Title')}</h2>
                 <CalculatorForm 
                   quantity={quantity}
@@ -139,7 +139,7 @@ const App: React.FC = () => {
                 />
               </div>
 
-              <div className="bg-base-200 p-6 rounded-2xl shadow-lg flex-grow">
+              <div className="bg-base-200/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex-grow border border-white/50">
                 <h2 className="text-2xl font-semibold mb-4 border-b border-base-300 pb-3">{t('step3Title')}</h2>
                 <ResultDisplay
                   formula={formula}

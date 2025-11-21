@@ -13,12 +13,12 @@
             colors: {
               'brand-primary': '#4f46e5',
               'brand-secondary': '#7c3aed',
-              'brand-yellow': '#facc15',
-              'base-100': '#1f2937',
-              'base-200': '#374151',
-              'base-300': '#4b5563',
-              'content-100': '#f3f4f6',
-              'content-200': '#d1d5db',
+              'brand-yellow': '#D97706', // Amber 600 - Good contrast on light bg
+              'base-100': '#FFFFFF', // Was dark bg, now white for general elements
+              'base-200': '#FFFFFF', // Cards are white
+              'base-300': '#F1F5F9', // Light grey for inputs/borders (slate-100)
+              'content-100': '#1E293B', // Dark text for titles (slate-800)
+              'content-200': '#64748B', // Lighter dark text for descriptions (slate-500)
             },
           },
         },
@@ -36,7 +36,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-base-100">
+  <body class="bg-gradient-to-br from-sky-100 to-blue-200">
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>

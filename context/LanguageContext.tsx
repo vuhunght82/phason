@@ -29,12 +29,13 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     const fetchTranslations = async () => {
       setIsLoading(true);
       try {
+        // Use absolute paths for robustness in different hosting environments.
         const [enResponse, viResponse] = await Promise.all([
-          fetch('./locales/en.json'),
-          fetch('./locales/vi.json')
+          fetch('/locales/en.json'),
+          fetch('/locales/vi.json')
         ]);
         if (!enResponse.ok || !viResponse.ok) {
-          throw new Error('Failed to load translation files');
+          throw new Error(`Failed to load translation files. Status: ${enResponse.status}, ${viResponse.status}`);
         }
         const enData = await enResponse.json();
         const viData = await viResponse.json();
@@ -65,7 +66,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
     
     const langTranslations = translations[language];
-    if (!langTranslations) {
+    if (!langTranslations || Object.keys(langTranslations).length === 0) {
         return key;
     }
 
@@ -82,7 +83,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   // While translations are loading, show a full-screen loading indicator.
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-base-100 flex items-center justify-center">
+      <div className="fixed inset-0 bg-sky-100/50 backdrop-blur-sm flex items-center justify-center z-50">
         <div className="w-20 h-20 border-4 border-dashed rounded-full animate-spin border-brand-primary"></div>
       </div>
     );
